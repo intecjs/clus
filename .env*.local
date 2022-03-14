@@ -2,5 +2,6 @@
 # https://console.cloud.google.com/apis/credentials
 GOOGLE_AUTH_PROVIDER_ID=
 GOOGLE_AUTH_PROVIDER_SECRET=
+SECRET=
 
 NEXTAUTH_URL=http://localhost:3000
