@@ -7,6 +7,9 @@ const nextConfig = {
       use: ["@svgr/webpack"]
     });
     return config;
+  },
+  images: {
+    domains: ['lh3.googleusercontent.com']
   }
 }
 
