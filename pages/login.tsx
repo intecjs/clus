@@ -13,7 +13,7 @@ export default function Login() {
         <div className={styles.image_border}>
           <Image
             className={styles.avatar}
-            src={session.user?.image ?? ''}
+            src={(session.user?.image as string) ?? ''}
             alt="user icon image"
             height={100}
             width={100}
@@ -26,6 +26,7 @@ export default function Login() {
       </main>
     );
   }
+
   return (
     <main className={styles.main}>
       <Button color="secondary" onClick={() => signIn('google')}>
