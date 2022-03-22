@@ -1,8 +1,6 @@
 import { useSession } from 'next-auth/react';
-import styles from '../styles/Login.module.css';
-import { UserIcon } from '../src/components/icon/UserIcon';
-import { SignOutButton } from '../src/components/button/SignOutButton';
-import { GoogleLoginButton } from '../src/components/button/GoogleLoginButton';
+import styles from '@styles/Login.module.scss';
+import { GoogleLoginButton, SignOutButton, UserIcon } from '@components';
 
 const NoAccountCreateRecommendation = () => {
   return (

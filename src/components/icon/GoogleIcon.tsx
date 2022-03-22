@@ -1,4 +1,4 @@
-import ReactComponent from './Google.svg';
+import ReactComponent from './GoogleLogo.svg';
 
 const GoogleIcon = () => {
   return <ReactComponent />;
