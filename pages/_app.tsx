@@ -9,7 +9,7 @@ type Props = {
   children?: any;
 } & AuthComponentConfig;
 
-const Authorizer: React.FC<Props> = ({ children, auth }) => {
+const Authorizer: React.FC<Props> = ({ children }) => {
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -18,10 +18,6 @@ const Authorizer: React.FC<Props> = ({ children, auth }) => {
       router.replace('/login');
     }
   }, [status, router]);
-
-  if (!auth) {
-    return children;
-  }
 
   const isUser = !!session?.user;
   if (isUser) {
@@ -36,9 +32,13 @@ const Authorizer: React.FC<Props> = ({ children, auth }) => {
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps<{ auth: any }>) {
   return (
     <SessionProvider session={session}>
-      <Authorizer auth={Component.auth}>
+      {Component.auth ? (
+        <Authorizer auth={Component.auth}>
+          <Component {...pageProps} />
+        </Authorizer>
+      ) : (
         <Component {...pageProps} />
-      </Authorizer>
+      )}
     </SessionProvider>
   );
 }

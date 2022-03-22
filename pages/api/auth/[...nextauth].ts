@@ -28,15 +28,15 @@ export default NextAuth({
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      // console.log({ signIn: { user, account, profile, email, credentials } });
+      console.log({ signIn: { user, account, profile, email, credentials } });
       return true;
     },
     async redirect({ url, baseUrl }) {
-      // console.log({ redirect: { url, baseUrl } });
+      console.log({ redirect: { url, baseUrl } });
       return baseUrl;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
-      // console.log({ jwt: { token, user, account, profile, isNewUser } });
+      console.log({ jwt: { token, user, account, profile, isNewUser } });
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
@@ -44,7 +44,7 @@ export default NextAuth({
       return token;
     },
     async session({ session, token, user }) {
-      // console.log({ session: { session, user, token } });
+      console.log({ session: { session, user, token } });
 
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
