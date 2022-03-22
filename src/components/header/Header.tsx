@@ -1,6 +1,7 @@
+import { UserIconWithMenu } from '@components/icon/UserIconWithMenu';
 import { useSession } from 'next-auth/react';
-import { SignOutButton } from '../button/SignOutButton';
-import { UserIcon } from '../icon/UserIcon';
+import Link from 'next/link';
+import { useMemo } from 'react';
 import styles from './Header.module.scss';
 
 export const Header = () => {
@@ -8,10 +9,17 @@ export const Header = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>CLUS</div>
+      <Link href="/" passHref>
+        <a className={styles.title}>CLUS</a>
+      </Link>
       <div className={styles.rightContainer}>
-        <SignOutButton />
-        <UserIcon image={(session?.user.image as string) ?? ''} height={70} width={70} />
+        <UserIconWithMenu
+          name={session?.user.name ?? ''}
+          image={(session?.user.image as string) ?? ''}
+          email={session?.user.email ?? ''}
+          height={70}
+          width={70}
+        />
       </div>
     </div>
   );
