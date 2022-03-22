@@ -1,0 +1,20 @@
+.container {
+  height: 100px;
+  //   background-color: aqua;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: xx-large;
+  font-weight: 800;
+}
+
+.rightContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
