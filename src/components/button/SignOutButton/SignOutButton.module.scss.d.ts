@@ -1,8 +1,6 @@
 // customer banner
 export type Styles = {
-  'button': string;
-  'primary': string;
-  'secondary': string;
+  'text': string;
 };
 
 export type TheClasses = keyof Styles;

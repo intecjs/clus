@@ -16,6 +16,52 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
+## Directory structure
+
+```bash
+src
+├── components                      // Components
+│   ├── button
+│   │   ├── Button.module.scss
+│   │   ├── Button.module.scss.d.ts
+│   │   ├── Button.tsx
+│   │   ├── GoogleLoginButton.tsx
+│   │   ├── SignOutButton.module.scss
+│   │   ├── SignOutButton.module.scss.d.ts
+│   │   ├── SignOutButton.tsx
+│   │   └── index.ts
+│   ├── header
+│   │   ├── Header.module.scss
+│   │   ├── Header.module.scss.d.ts
+│   │   ├── Header.tsx
+│   │   └── index.ts
+│   ├── icon
+│   │   ├── GoogleIcon.tsx
+│   │   ├── GoogleLogo.svg
+│   │   ├── UserIcon.module.css
+│   │   ├── UserIcon.tsx
+│   │   └── index.ts
+│   └── index.ts
+├── pages                           // Page components, api handlers
+│   ├── _app.tsx                    // -- Application Root
+│   ├── index.tsx                   // -- `/` page
+│   ├── api
+│   │   ├── auth
+│   │   ├── example
+│   │   └── hello.ts
+│   └── login
+│       └── index.tsx               // -- `/login` page
+└── styles                          // Page level styles
+    ├── Home.module.scss
+    ├── Home.module.scss.d.ts
+    ├── Login.module.scss
+    ├── Login.module.scss.d.ts
+    ├── README.md
+    └── globals.scss
+```
+
+## API routes
+
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.

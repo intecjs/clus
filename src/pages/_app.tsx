@@ -1,9 +1,9 @@
-import '../styles/globals.css';
+import '@styles/globals.scss';
 import type { AppProps } from 'next/app';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { AuthComponentConfig } from '../types/next-auth';
+import { AuthComponentConfig } from '../../types/next-auth';
 
 type Props = {
   children?: any;
