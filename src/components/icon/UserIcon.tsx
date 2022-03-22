@@ -1,7 +1,6 @@
-import Image from 'next/image';
 import styles from './UserIcon.module.css';
 
-type UserIconProps = {
+export type UserIconProps = {
   image: string;
   height?: number;
   width?: number;
@@ -9,12 +8,14 @@ type UserIconProps = {
 
 export const UserIcon: React.FC<UserIconProps> = ({ image, height, width }) => {
   return (
-    <Image
+    // To use public OAuth Provider's image
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       className={styles.avatar}
       src={image ?? ''}
       alt="user icon image"
       height={height ?? 100}
       width={width ?? 100}
-    ></Image>
+    ></img>
   );
 };
