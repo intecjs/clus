@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 import styles from '@styles/Login.module.scss';
-import { GoogleLoginButton, SignOutButton, UserIcon } from '@components';
+import { GoogleLoginButton, SignOutButton, UserIcon, Blob, Blob2 } from '@components';
 
 const NoAccountCreateRecommendation = () => {
   return (
@@ -28,6 +28,12 @@ export default function Login() {
 
   return (
     <main className={styles.main}>
+      <div className={styles.blobOne}>
+        <Blob />
+      </div>
+      <div className={styles.blobTwo}>
+        <Blob2 />
+      </div>
       <GoogleLoginButton />
       <NoAccountCreateRecommendation />
     </main>

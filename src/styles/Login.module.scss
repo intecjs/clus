@@ -10,6 +10,21 @@
   gap: 1rem;
 }
 
+.blobOne {
+  position: absolute;
+  right: 30vw;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.blobTwo {
+  position: absolute;
+  left: 30vw;
+  top: 40vh;
+  z-index: -1;
+  overflow: hidden;
+}
+
 .link:hover {
   border-bottom: 1px solid;
 }
