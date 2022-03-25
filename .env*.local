@@ -5,3 +5,6 @@ GOOGLE_AUTH_PROVIDER_SECRET=
 SECRET=
 
 NEXTAUTH_URL=http://localhost:3000
+
+http_proxy=
+https_proxy=
