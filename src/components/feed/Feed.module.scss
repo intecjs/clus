@@ -1,0 +1,19 @@
+.feed {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  border-bottom: dashed 0.5px #eaeaea;
+}
+
+.feed a {
+  text-decoration: underline;
+}
+
+.feed p {
+  font-size: 12px;
+}
+
+.feed img {
+  border-radius: 5rem;
+}

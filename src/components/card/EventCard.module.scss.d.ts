@@ -1,9 +1,9 @@
 // customer banner
 export type Styles = {
-  'container': string;
-  'contents': string;
-  'main': string;
-  'sideArea': string;
+  'card': string;
+  'date': string;
+  'description': string;
+  'users': string;
 };
 
 export type TheClasses = keyof Styles;
