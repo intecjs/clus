@@ -93,7 +93,8 @@ const Home: ComponentWithAuth = ({ events }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(process.env.NEXTAUTH_URL + '/api/events');
+  const url = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
+  const res = await fetch(url + '/api/events');
   const events: Event[] = await res.json();
 
   if (!events) {
