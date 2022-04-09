@@ -93,7 +93,7 @@ const Home: ComponentWithAuth = ({ events }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url = process.env.VERCEL_URL || 'http://localhost:3000';
+  const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
   const res = await fetch(url + '/api/events');
   const events: Event[] = await res.json();
 
