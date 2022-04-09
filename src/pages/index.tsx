@@ -7,71 +7,32 @@ import { EventCard } from '../components/card/EventCard';
 import faker from '@faker-js/faker';
 import { useState } from 'react';
 import { Feeds } from '../components/feed/Feed';
+import { events, Event } from '../db/event';
+import Link from 'next/link';
+import { useEmojiFavicon } from 'src/hooks/useFavicon';
 
-const events = [
-  {
-    id: faker.datatype.uuid(),
-    title: 'NestJS meetup Online #2',
-    description: 'この勉強会ではXXXを行っています。',
-    date: faker.date.recent().toISOString(),
-    userCount: faker.datatype.number(100),
-    imageUrl: 'https://picsum.photos/150/100?random=1',
-  },
-  {
-    id: faker.datatype.uuid(),
-    title: 'ソフトウェアアーキテクチャの基礎 輪読会 #4',
-    description: '23時の深夜に開催！みなさんも是非ご参加ください。',
-    date: faker.date.recent().toISOString(),
-    userCount: faker.datatype.number(100),
-    imageUrl: 'https://picsum.photos/150/100?random=2',
-  },
-  {
-    id: faker.datatype.uuid(),
-    title: 'Serverless Meetup Japan Virtual #22',
-    description: 'serverless! serverless! serverless!!',
-    date: faker.date.recent().toISOString(),
-    userCount: faker.datatype.number(100),
-    imageUrl: 'https://picsum.photos/150/100?random=3',
-  },
-  {
-    id: faker.datatype.uuid(),
-    title: 'Serverless Meetup Japan Virtual #21',
-    description: 'serverless! serverless! serverless!!',
-    date: faker.date.recent().toISOString(),
-    userCount: faker.datatype.number(100),
-    imageUrl: 'https://picsum.photos/150/100?random=4',
-  },
-  {
-    id: faker.datatype.uuid(),
-    title: 'Serverless Meetup Japan Virtual #20',
-    description: 'serverless! serverless! serverless!!',
-    date: faker.date.recent().toISOString(),
-    userCount: faker.datatype.number(100),
-    imageUrl: 'https://picsum.photos/150/100?random=5',
-  },
-  ...[...new Array(10)].map((item) => {
-    return {
-      id: faker.datatype.uuid(),
-      title: faker.lorem.sentence(),
-      description: faker.lorem.sentence(),
-      date: faker.date.recent().toISOString(),
-      userCount: faker.datatype.number(100),
-      imageUrl: 'https://picsum.photos/150/100?random=' + faker.datatype.number(100),
-    };
-  }),
-];
+const EventCardWithLink: React.FC<{ event: Event }> = ({ event }) => {
+  return (
+    <Link href={'/events/' + event.id} passHref>
+      <a>
+        <EventCard {...event} />
+      </a>
+    </Link>
+  );
+};
 
 const ReservedEvents = () => {
+  const reservedEvents = events.slice(0, 10);
   const [hide, setHide] = useState(true);
   const handler = () => setHide(!hide);
 
   return (
     <div>
       <h2>次に参加予定のイベント ⚡️</h2>
-      {(hide ? events.slice(0, 5) : events).map((event) => {
+      {(hide ? reservedEvents.slice(0, 5) : reservedEvents).map((event) => {
         return (
           <div key={event.id} style={{ paddingBottom: '0.5rem' }}>
-            <EventCard {...event} />
+            <EventCardWithLink event={event} />
           </div>
         );
       })}
@@ -82,23 +43,14 @@ const ReservedEvents = () => {
 };
 
 const RecommendEvents = () => {
-  const recommendEvents = [...new Array(10)].map((item) => {
-    return {
-      id: faker.datatype.uuid(),
-      title: faker.lorem.sentence(),
-      description: faker.lorem.sentence(),
-      date: faker.date.recent().toISOString(),
-      userCount: faker.datatype.number(100),
-      imageUrl: 'https://picsum.photos/150/100?random=' + faker.datatype.number(100),
-    };
-  });
+  const recommendEvents = events.slice(20, 30);
   return (
     <div>
       <h2>おすすめイベント ✋</h2>
       {recommendEvents.map((event) => {
         return (
           <div key={event.id} style={{ paddingBottom: '0.5rem' }}>
-            <EventCard {...event} />
+            <EventCardWithLink event={event} />
           </div>
         );
       })}
@@ -134,16 +86,13 @@ const WelcomeMessage: React.FC<{ name: string }> = ({ name }) => {
 const Home: ComponentWithAuth = () => {
   const { data } = useSession();
 
+  useEmojiFavicon('🥕');
+
   return (
     <div className={styles.container}>
       <Head>
         <title>Clus | Home</title>
         <meta name="description" content="clus | home" />
-        {/* <link rel="icon" href="/favicon.ico" /> */}
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 style=%22dominant-baseline:central;text-anchor:middle;font-size:90px;%22>🥕</text></svg>"
-        ></link>
       </Head>
 
       <Header></Header>
