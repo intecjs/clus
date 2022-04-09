@@ -11,6 +11,7 @@ import { useEmojiFavicon } from '@hooks';
 import { GetServerSideProps } from 'next';
 import Layout from '@components/layout/Layout';
 import { feeds } from 'src/db/feeds';
+import { APIClient } from 'src/lib/APIClient';
 
 const EventCardWithLink: React.FC<{ event: Event }> = ({ event }) => {
   return (
@@ -93,9 +94,7 @@ const Home: ComponentWithAuth = ({ events }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
-  const res = await fetch(url + '/api/events');
-  const events: Event[] = await res.json();
+  const events = await new APIClient().getEvents();
 
   if (!events) {
     return {

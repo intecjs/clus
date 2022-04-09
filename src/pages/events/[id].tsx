@@ -3,6 +3,7 @@ import Layout from '@components/layout/Layout';
 import { GetServerSideProps } from 'next';
 
 import Head from 'next/head';
+import { APIClient } from 'src/lib/APIClient';
 import { Event } from '../../db/event';
 import { useEmojiFavicon } from '../../hooks/useFavicon';
 
@@ -24,11 +25,23 @@ export default function EventPage({ event }: Props) {
   );
 }
 
+function pickFirstUrlQuery(value: string | string[]): string {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+
+  return value;
+}
+
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const url = process.env.VERCEL_URL || 'http://localhost:3000';
-  const res = await fetch(url + '/api/events');
-  const data: Event[] = await res.json();
-  const event = data.find((item) => item.id === params?.id);
+  if (params?.id === undefined) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const id = pickFirstUrlQuery(params.id);
+  const event = await new APIClient().getEvent(id);
 
   if (!event) {
     return {
