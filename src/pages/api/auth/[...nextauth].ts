@@ -20,7 +20,7 @@ const google = preview
           id: 1,
           name: 'J Smith',
           email: 'jsmith@example.com',
-          image: 'https://i.pravatar.cc/',
+          image: 'https://i.pravatar.cc/?img=2',
         };
       },
     })

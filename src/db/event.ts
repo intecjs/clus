@@ -28,7 +28,7 @@ export const events: Event[] = [
     date: faker.date.recent().toISOString(),
     userCount: faker.datatype.number(100),
     imageUrl: 'https://picsum.photos/150/100?random=2',
-    emoji: '🍊',
+    emoji: faker.random.arrayElement(emojis),
   },
   {
     id: '3',
@@ -37,7 +37,7 @@ export const events: Event[] = [
     date: faker.date.recent().toISOString(),
     userCount: faker.datatype.number(100),
     imageUrl: 'https://picsum.photos/150/100?random=3',
-    emoji: '💨',
+    emoji: faker.random.arrayElement(emojis),
   },
   {
     id: '4',

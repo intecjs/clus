@@ -1,14 +1,7 @@
 import styles from './EventCard.module.scss';
+import { Event } from '../../db/event';
 
-type CardProps = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  userCount: number;
-  imageUrl: string;
-  emoji: string;
-};
+type CardProps = Event;
 export const EventCard: React.FC<CardProps> = ({ title, description, date, userCount, imageUrl, emoji }) => {
   return (
     <div className={styles.card}>

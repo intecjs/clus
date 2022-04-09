@@ -1,9 +1,9 @@
 import { EventCard } from '@components/card/EventCard';
+import Layout from '@components/layout/Layout';
 import { GetServerSideProps } from 'next';
 
 import Head from 'next/head';
-import { emojis } from '../../db/emoji';
-import { events, Event } from '../../db/event';
+import { Event } from '../../db/event';
 import { useEmojiFavicon } from '../../hooks/useFavicon';
 
 type Props = {
@@ -13,23 +13,21 @@ export default function EventPage({ event }: Props) {
   useEmojiFavicon(event.emoji);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>{event.title}</title>
         <meta name="description" content={event.title} />
       </Head>
 
-      <main>
-        <EventCard {...event} />
-      </main>
-    </>
+      <EventCard {...event} />
+    </Layout>
   );
 }
 
-const eee = events;
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const event = eee.find((item) => item.id === params?.id);
+  const res = await fetch(process.env.NEXTAUTH_URL + '/api/events');
+  const data: Event[] = await res.json();
+  const event = data.find((item) => item.id === params?.id);
 
   if (!event) {
     return {

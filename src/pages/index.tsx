@@ -1,15 +1,16 @@
 import { ComponentWithAuth } from 'next-auth';
 import Head from 'next/head';
 import styles from '@styles/Home.module.scss';
-import { Header } from '@components';
 import { useSession } from 'next-auth/react';
 import { EventCard } from '../components/card/EventCard';
-import faker from '@faker-js/faker';
 import { useState } from 'react';
 import { Feeds } from '../components/feed/Feed';
-import { events, Event } from '../db/event';
+import { Event } from '../db/event';
 import Link from 'next/link';
-import { useEmojiFavicon } from 'src/hooks/useFavicon';
+import { useEmojiFavicon } from '@hooks';
+import { GetServerSideProps } from 'next';
+import Layout from '@components/layout/Layout';
+import { feeds } from 'src/db/feeds';
 
 const EventCardWithLink: React.FC<{ event: Event }> = ({ event }) => {
   return (
@@ -21,15 +22,14 @@ const EventCardWithLink: React.FC<{ event: Event }> = ({ event }) => {
   );
 };
 
-const ReservedEvents = () => {
-  const reservedEvents = events.slice(0, 10);
+const ReservedEvents: React.FC<{ events: Event[] }> = ({ events }) => {
   const [hide, setHide] = useState(true);
   const handler = () => setHide(!hide);
 
   return (
     <div>
-      <h2>次に参加予定のイベント ⚡️</h2>
-      {(hide ? reservedEvents.slice(0, 5) : reservedEvents).map((event) => {
+      <h2>次に参加予定のイベント</h2>
+      {(hide ? events.slice(0, 5) : events).map((event) => {
         return (
           <div key={event.id} style={{ paddingBottom: '0.5rem' }}>
             <EventCardWithLink event={event} />
@@ -42,12 +42,11 @@ const ReservedEvents = () => {
   );
 };
 
-const RecommendEvents = () => {
-  const recommendEvents = events.slice(20, 30);
+const RecommendEvents: React.FC<{ events: Event[] }> = ({ events }) => {
   return (
     <div>
-      <h2>おすすめイベント ✋</h2>
-      {recommendEvents.map((event) => {
+      <h2>おすすめイベント</h2>
+      {events.map((event) => {
         return (
           <div key={event.id} style={{ paddingBottom: '0.5rem' }}>
             <EventCardWithLink event={event} />
@@ -62,57 +61,53 @@ const Calendar = () => {
   return <div style={{ height: '200px', backgroundColor: 'rgb(99.5%, 67.2%, 78%)', color: 'white' }}>calendar</div>;
 };
 
-const feeds = [
-  {
-    id: faker.datatype.uuid(),
-    votedUserAvatarUrl: faker.image.avatar(),
-    votedUser: faker.name.firstName(),
-    eventName: faker.lorem.sentence(),
-  },
-  ...[...new Array(10)].map((item) => {
-    return {
-      id: faker.datatype.uuid(),
-      votedUserAvatarUrl: faker.image.avatar(),
-      votedUser: faker.name.firstName(),
-      eventName: faker.lorem.sentence(),
-    };
-  }),
-];
-
 const WelcomeMessage: React.FC<{ name: string }> = ({ name }) => {
   return <h1>{name} さん ようこそ👋</h1>;
 };
 
-const Home: ComponentWithAuth = () => {
+const Home: ComponentWithAuth = ({ events }) => {
   const { data } = useSession();
 
   useEmojiFavicon('🥕');
 
   return (
-    <div className={styles.container}>
+    <Layout>
       <Head>
         <title>Clus | Home</title>
         <meta name="description" content="clus | home" />
       </Head>
 
-      <Header></Header>
-      <main>
-        {data?.user.name && <WelcomeMessage name={data.user.name} />}
-        <div className={styles.main}>
-          <div className={styles.contents}>
-            <ReservedEvents />
-            <RecommendEvents />
-          </div>
-          <div className={styles.sideArea}>
-            <Calendar />
-            <Feeds feeds={feeds} />
-          </div>
-        </div>
-      </main>
-    </div>
+      {data?.user.name && <WelcomeMessage name={data.user.name} />}
+      <div className={styles.main}>
+        <section className={styles.contents}>
+          <ReservedEvents events={events.slice(0, 10)} />
+          <RecommendEvents events={events.slice(11, 30)} />
+        </section>
+        <section className={styles.sideArea}>
+          <Calendar />
+          <Feeds feeds={feeds} />
+        </section>
+      </div>
+    </Layout>
   );
 };
 
-Home.auth = true;
+export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await fetch(process.env.NEXTAUTH_URL + '/api/events');
+  const events: Event[] = await res.json();
 
+  if (!events) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      events,
+    },
+  };
+};
+
+Home.auth = true;
 export default Home;
