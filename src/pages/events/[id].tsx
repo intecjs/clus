@@ -16,10 +16,29 @@ import { UserIcon } from '@components/icon';
 import Markdown from '@components/markdown/Markdown';
 import Button from '@components/button/Button';
 
-type Props = {
+type EventPageProps = {
   event: Event;
 };
-export default function EventPage({ event }: Props) {
+
+const EventPage = ({ event }: EventPageProps) => {
+  return (
+    <Layout>
+      <Head>
+        <title>{event.title}</title>
+        <meta name="description" content={event.title} />
+      </Head>
+
+      <EventPageHeader event={event} />
+
+      <div className={styles.main}>
+        <PageBody event={event} />
+        <PageAside event={event} />
+      </div>
+    </Layout>
+  );
+};
+
+const EventPageHeader = ({ event }: EventPageProps) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const handleClickEmoji = () => setShowEmojiPicker(true);
   const handleClickEmojiPicker = (e: BaseEmoji) => {
@@ -37,80 +56,80 @@ export default function EventPage({ event }: Props) {
   useEmojiFavicon(emoji?.native ?? '🍎');
 
   return (
-    <Layout>
-      <Head>
-        <title>{event.title}</title>
-        <meta name="description" content={event.title} />
-      </Head>
-
-      <div className={styles.header}>
-        <div className={styles.emojiContainer}>
-          <div className={styles.eventPageThemeEmoji} onClick={handleClickEmoji}>
-            <Emoji emoji={emoji} set="apple" size={75} />
-          </div>
-          <div className={styles.emojiPicker} ref={wrapperRef}>
-            {showEmojiPicker && <Picker set="apple" onClick={handleClickEmojiPicker} />}
-          </div>
+    <div className={styles.header}>
+      <div className={styles.emojiContainer}>
+        <div className={styles.eventPageThemeEmoji} onClick={handleClickEmoji}>
+          <Emoji emoji={emoji} set="apple" size={75} />
         </div>
-        <div className={styles.titleContainer}>
-          <h1>{event.title}</h1>
-          <p>{event.subTitle}</p>
-          <span>
-            <span className={styles.userEmoji}>
-              <Emoji emoji={'bust_in_silhouette'} size={18} />
-            </span>
-            <span className={styles.reservedUsers}>{event.reservedUsers.length}</span>
-            <span> / </span>
-            <span className={styles.capacity}>{event.capacity}</span>
-          </span>
+        <div className={styles.emojiPicker} ref={wrapperRef}>
+          {showEmojiPicker && <Picker set="apple" onClick={handleClickEmojiPicker} />}
         </div>
       </div>
+      <div className={styles.titleContainer}>
+        <h1>{event.title}</h1>
+        <p>{event.subTitle}</p>
+        <span>
+          <span className={styles.userEmoji}>
+            <Emoji emoji={'bust_in_silhouette'} size={18} />
+          </span>
+          <span className={styles.reservedUsers}>{event.reservedUsers.length}</span>
+          <span> / </span>
+          <span className={styles.capacity}>{event.capacity}</span>
+        </span>
+      </div>
+    </div>
+  );
+};
 
-      <div className={styles.main}>
-        <div className={styles.page}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={event.imageUrl} className={styles.eventImage} alt="event page abstract image" width={'100%'} />
-          <h2 className={styles.description}>Description</h2>
-          <Markdown>{event.description}</Markdown>
-        </div>
-        <div className={styles.aside}>
-          <div className={styles.eventDate}>
-            <h2>{dayjs(event.date).format('YYYY/MM/DD')}</h2>
-            <span>
-              {dayjs(event.date).format('HH:mm')} - {dayjs(event.end).format('HH:mm')}
-            </span>
+const PageBody = ({ event }: EventPageProps) => {
+  return (
+    <div className={styles.page}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={event.imageUrl} className={styles.eventImage} alt="event page abstract image" width={'100%'} />
+      <h2 className={styles.description}>Description</h2>
+      <Markdown>{event.description}</Markdown>
+    </div>
+  );
+};
 
-            <Button className={styles.button} color="primary">
-              このイベントに申し込む
+const PageAside = ({ event }: EventPageProps) => {
+  return (
+    <div className={styles.aside}>
+      <div className={styles.eventDate}>
+        <h2>{dayjs(event.date).format('YYYY/MM/DD')}</h2>
+        <span>
+          {dayjs(event.date).format('HH:mm')} - {dayjs(event.end).format('HH:mm')}
+        </span>
+
+        <Button className={styles.button} color="primary">
+          このイベントに申し込む
+        </Button>
+      </div>
+      <div className={styles.users}>
+        <h3>参加者</h3>
+        {[...new Array(faker.datatype.number(20))].map((_, i) => (
+          <UserIcon key={i} image={faker.image.avatar()} height={40} width={40} />
+        ))}
+      </div>
+      <div className={styles.owner}>
+        <h3>管理者</h3>
+        <div className={styles.container}>
+          <UserIcon image={faker.image.avatar()} height={60} width={60} />
+          <div>
+            <div className={styles.name}>
+              <span>{faker.name.firstName()}</span>
+              <span>{faker.name.lastName()}</span>
+            </div>
+            <Button color="secondary" className={styles.followButton}>
+              Follow
             </Button>
           </div>
-          <div className={styles.users}>
-            <h3>参加者</h3>
-            {[...new Array(faker.datatype.number(20))].map((_, i) => (
-              <UserIcon key={i} image={faker.image.avatar()} height={40} width={40} />
-            ))}
-          </div>
-          <div className={styles.owner}>
-            <h3>管理者</h3>
-            <div className={styles.container}>
-              <UserIcon image={faker.image.avatar()} height={60} width={60} />
-              <div>
-                <div className={styles.name}>
-                  <span>{faker.name.firstName()}</span>
-                  <span>{faker.name.lastName()}</span>
-                </div>
-                <Button color="secondary" className={styles.followButton}>
-                  Follow
-                </Button>
-              </div>
-            </div>
-            <div>{faker.lorem.paragraph()}</div>
-          </div>
         </div>
+        <div>{faker.lorem.paragraph()}</div>
       </div>
-    </Layout>
+    </div>
   );
-}
+};
 
 function pickFirstUrlQuery(value: string | string[]): string {
   if (Array.isArray(value)) {
@@ -195,3 +214,5 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 //     };
 //   }
 // };
+
+export default EventPage;

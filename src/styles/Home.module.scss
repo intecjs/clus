@@ -17,11 +17,11 @@
 
 @media (max-width: 1000px) {
   .main {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 5fr 2fr;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .main {
     grid-template-columns: 1fr;
   }

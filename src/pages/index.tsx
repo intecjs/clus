@@ -127,5 +127,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-Home.auth = false;
+Home.auth = true;
 export default Home;

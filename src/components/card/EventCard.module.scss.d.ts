@@ -4,6 +4,7 @@ export type Styles = {
   'container': string;
   'date': string;
   'description': string;
+  'img': string;
   'users': string;
 };
 

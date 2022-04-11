@@ -8,12 +8,17 @@
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
 
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
   gap: 10px;
 
   .container {
-    padding: 1.5rem;
+    padding: 1.0rem;
+
+    h2 {
+      margin: 0 0 0.2rem 0;
+      font-size: large
+    }
   };
 
   .description {
@@ -21,10 +26,9 @@
   }
 }
 
-.card img {
-  width: 180px;
-  height: 100%;
-  object-fit: cover;
+
+.img {
+  border-radius: 0 0.5rem 0.5rem 0;
 };
 
 
@@ -33,12 +37,6 @@
     padding: 0;
     .container {
       padding: 0.8rem;
-      h2 {
-        font-size: medium;
-      }
-    }
-    img {
-      width: 150px;
     }
   }
 }
@@ -50,10 +48,6 @@
   border-color: var(--c-primary);
 }
 
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.2rem;
-}
 
 .card p {
   margin: 0;

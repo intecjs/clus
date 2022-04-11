@@ -88,7 +88,7 @@ export const events: Event[] = [
     end: faker.date.recent().toISOString(),
     reservedUsers: faker.random.arrayElements(users),
     capacity: 100,
-    imageUrl: 'https://picsum.photos/350/200?random=1',
+    imageUrl: 'https://picsum.photos/id/237/350/200',
     emoji: '🍎',
   },
   {
@@ -100,7 +100,7 @@ export const events: Event[] = [
     end: faker.date.recent().toISOString(),
     reservedUsers: faker.random.arrayElements(users),
     capacity: 50,
-    imageUrl: 'https://picsum.photos/150/100?random=2',
+    imageUrl: `https://picsum.photos/id/211/150/100`,
     emoji: faker.random.arrayElement(emojis),
   },
   {
@@ -112,7 +112,7 @@ export const events: Event[] = [
     end: faker.date.recent().toISOString(),
     reservedUsers: faker.random.arrayElements(users),
     capacity: 30,
-    imageUrl: 'https://picsum.photos/150/100?random=3',
+    imageUrl: `https://picsum.photos/id/12/150/100`,
     emoji: faker.random.arrayElement(emojis),
   },
   {
@@ -124,7 +124,7 @@ export const events: Event[] = [
     end: faker.date.recent().toISOString(),
     reservedUsers: faker.random.arrayElements(users),
     capacity: 20,
-    imageUrl: 'https://picsum.photos/150/100?random=4',
+    imageUrl: `https://picsum.photos/id/56/150/100`,
     emoji: faker.random.arrayElement(emojis),
   },
   {
@@ -136,7 +136,7 @@ export const events: Event[] = [
     end: faker.date.recent().toISOString(),
     reservedUsers: faker.random.arrayElements(users),
     capacity: 100,
-    imageUrl: 'https://picsum.photos/150/100?random=5',
+    imageUrl: `https://picsum.photos/id/99/150/100`,
     emoji: faker.random.arrayElement(emojis),
   },
   ...[...new Array(30)].map((_, i) => {

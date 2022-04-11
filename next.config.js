@@ -9,7 +9,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['lh3.googleusercontent.com', 'i.pravatar.cc']
+    domains: ['lh3.googleusercontent.com', 'i.pravatar.cc', 'i.picsum.photos', 'cloudflare-ipfs.com', 'picsum.photos']
   },
 }
 
