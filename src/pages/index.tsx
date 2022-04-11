@@ -59,11 +59,29 @@ const RecommendEvents: React.FC<{ events: Event[] }> = ({ events }) => {
 };
 
 const Calendar = () => {
-  return <div style={{ height: '200px', backgroundColor: 'rgb(99.5%, 67.2%, 78%)', color: 'white' }}>calendar</div>;
+  return (
+    <div
+      style={{
+        height: '200px',
+        backgroundColor: 'rgb(100%, 95.6%, 93.7%)',
+        borderRadius: '0.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'gray',
+      }}
+    >
+      calendar
+    </div>
+  );
 };
 
 const WelcomeMessage: React.FC<{ name: string }> = ({ name }) => {
-  return <h1>{name} さん ようこそ👋</h1>;
+  return (
+    <h1>
+      {name} さん ようこそ<span className={styles.hand}>👋</span>
+    </h1>
+  );
 };
 
 const Home: ComponentWithAuth = ({ events }) => {
@@ -109,5 +127,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-Home.auth = true;
+Home.auth = false;
 export default Home;

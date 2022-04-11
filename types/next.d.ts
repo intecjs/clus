@@ -1,10 +1,11 @@
 import type { NextComponentType, NextPageContext } from 'next';
 import type { Session } from 'next-auth';
 import type { Router } from 'next/router';
+import React from 'react';
 
 declare module 'next/app' {
   type AppProps<P = Record<string, unknown>> = {
-    Component: NextComponentType<NextPageContext, any, P> & { auth: any };
+    Component: (NextComponentType<NextPageContext, any, P> & { auth: any }) | React.JSXElementConstructor;
     router: Router;
     __N_SSG?: boolean;
     __N_SSP?: boolean;

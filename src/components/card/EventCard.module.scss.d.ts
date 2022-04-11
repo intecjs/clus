@@ -1,6 +1,7 @@
 // customer banner
 export type Styles = {
   'card': string;
+  'container': string;
   'date': string;
   'description': string;
   'users': string;

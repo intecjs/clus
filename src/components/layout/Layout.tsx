@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import { Header } from '../header';
 import styles from './Layout.module.scss';
 
-const Layout: NextPage = ({ children }) => {
+const Layout: React.FC = ({ children }) => {
   return (
     <div className={styles.container}>
       <Header></Header>

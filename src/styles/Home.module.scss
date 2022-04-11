@@ -27,3 +27,8 @@
   }
 }
 
+.hand:hover {
+  display: inline-block;
+  transform: rotate( 30deg );
+  transition: 100ms;
+}

@@ -11,7 +11,7 @@ const useFavicon = (href: any) => {
   }, [href]);
 };
 
-export const useEmojiFavicon = (emoji: Emoji) => {
+export const useEmojiFavicon = (emoji: string) => {
   const href =
     'data:image/svg+xml,' +
     '<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>' +
