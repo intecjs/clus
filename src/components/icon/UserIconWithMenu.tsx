@@ -1,22 +1,8 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { UserIcon, UserIconProps } from './UserIcon';
 import styles from './UserIconWithMenu.module.scss';
 import { signOut } from 'next-auth/react';
-import { useClickOutsideEventListener, useAnyKeyEventListener } from '@hooks';
-
-/**
- * Hook that call action depends on disabled evnet.
- *
- * Disabled event are below...
- * - clicks outside of the passed ref
- * - click esc key
- */
-const useDisabledEventListener = (callback: () => any) => {
-  const ref = useRef<HTMLDivElement>(null);
-  useClickOutsideEventListener(ref, callback);
-  useAnyKeyEventListener('Escape', callback);
-  return ref;
-};
+import { useDisabledEventListener } from '@hooks';
 
 type UserIconWithMenuProps = {
   name: string;

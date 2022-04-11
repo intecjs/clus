@@ -2,31 +2,32 @@ import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-const google =
-  process.env.VERCEL_ENV === 'preview'
-    ? CredentialsProvider({
-        name: 'Credentials',
-        credentials: {
-          username: {
-            label: 'Username',
-            type: 'text',
-            placeholder: 'jsmith',
-          },
-          password: { label: 'Password', type: 'password' },
+const preview = process.env.VERCEL_ENV === 'preview' || process.env.NODE_ENV === 'development';
+
+const google = preview
+  ? CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        username: {
+          label: 'Username',
+          type: 'text',
+          placeholder: 'jsmith',
         },
-        async authorize() {
-          return {
-            id: 1,
-            name: 'J Smith',
-            email: 'jsmith@example.com',
-            image: 'https://i.pravatar.cc/150?u=jsmith@example.com',
-          };
-        },
-      })
-    : GoogleProvider({
-        clientId: process.env.GOOGLE_AUTH_PROVIDER_ID ?? '',
-        clientSecret: process.env.GOOGLE_AUTH_PROVIDER_SECRET ?? '',
-      });
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize() {
+        return {
+          id: 1,
+          name: 'J Smith',
+          email: 'jsmith@example.com',
+          image: 'https://i.pravatar.cc/?img=2',
+        };
+      },
+    })
+  : GoogleProvider({
+      clientId: process.env.GOOGLE_AUTH_PROVIDER_ID ?? '',
+      clientSecret: process.env.GOOGLE_AUTH_PROVIDER_SECRET ?? '',
+    });
 
 export default NextAuth({
   providers: [google],
@@ -50,15 +51,15 @@ export default NextAuth({
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log({ signIn: { user, account, profile, email, credentials } });
+      // console.log({ signIn: { user, account, profile, email, credentials } });
       return true;
     },
     async redirect({ url, baseUrl }) {
-      console.log({ redirect: { url, baseUrl } });
+      // console.log({ redirect: { url, baseUrl } });
       return baseUrl;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
-      console.log({ jwt: { token, user, account, profile, isNewUser } });
+      // console.log({ jwt: { token, user, account, profile, isNewUser } });
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
@@ -66,7 +67,7 @@ export default NextAuth({
       return token;
     },
     async session({ session, token, user }) {
-      console.log({ session: { session, user, token } });
+      // console.log({ session: { session, user, token } });
 
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;

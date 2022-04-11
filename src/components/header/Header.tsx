@@ -1,7 +1,6 @@
 import { UserIconWithMenu } from '@components/icon/UserIconWithMenu';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useMemo } from 'react';
 import styles from './Header.module.scss';
 
 export const Header = () => {
@@ -10,7 +9,7 @@ export const Header = () => {
   return (
     <div className={styles.container}>
       <Link href="/" passHref>
-        <a className={styles.title}>CLUS</a>
+        <a className={styles.title}>CLUS 🥕</a>
       </Link>
       <div className={styles.rightContainer}>
         <UserIconWithMenu

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * Hook that handle clicks outside of the passed ref
@@ -42,3 +42,17 @@ export function useAnyKeyEventListener(keys: KeyboardEvent['key'], callback: () 
     };
   }, []);
 }
+
+/**
+ * Hook that call action depends on disabled evnet.
+ *
+ * Disabled event are below...
+ * - clicks outside of the passed ref
+ * - click esc key
+ */
+export const useDisabledEventListener = (callback: () => any) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useClickOutsideEventListener(ref, callback);
+  useAnyKeyEventListener('Escape', callback);
+  return ref;
+};
