@@ -1,5 +1,6 @@
 import faker from '@faker-js/faker';
-import { Emoji, emojis } from './emoji';
+import data from 'emoji-mart/data/all.json';
+import { BaseEmoji } from 'emoji-mart';
 
 type User = {
   id: string;
@@ -20,7 +21,7 @@ export type Event = {
   reservedUsers: User[];
   capacity: number;
   imageUrl: string;
-  emoji: Emoji;
+  emoji: BaseEmoji['id'];
 };
 
 const mdExample = `
@@ -78,6 +79,8 @@ const mdExample = `
 
 `;
 
+const emojiIds = Object.keys(data.emojis);
+
 export const events: Event[] = [
   {
     id: '1',
@@ -89,7 +92,7 @@ export const events: Event[] = [
     reservedUsers: faker.random.arrayElements(users),
     capacity: 100,
     imageUrl: 'https://picsum.photos/id/237/350/200',
-    emoji: '🍎',
+    emoji: 'apple',
   },
   {
     id: '2',
@@ -101,7 +104,7 @@ export const events: Event[] = [
     reservedUsers: faker.random.arrayElements(users),
     capacity: 50,
     imageUrl: `https://picsum.photos/id/211/150/100`,
-    emoji: faker.random.arrayElement(emojis),
+    emoji: faker.random.arrayElement(emojiIds),
   },
   {
     id: '3',
@@ -113,7 +116,7 @@ export const events: Event[] = [
     reservedUsers: faker.random.arrayElements(users),
     capacity: 30,
     imageUrl: `https://picsum.photos/id/12/150/100`,
-    emoji: faker.random.arrayElement(emojis),
+    emoji: faker.random.arrayElement(emojiIds),
   },
   {
     id: '4',
@@ -125,7 +128,7 @@ export const events: Event[] = [
     reservedUsers: faker.random.arrayElements(users),
     capacity: 20,
     imageUrl: `https://picsum.photos/id/56/150/100`,
-    emoji: faker.random.arrayElement(emojis),
+    emoji: faker.random.arrayElement(emojiIds),
   },
   {
     id: '5',
@@ -137,7 +140,7 @@ export const events: Event[] = [
     reservedUsers: faker.random.arrayElements(users),
     capacity: 100,
     imageUrl: `https://picsum.photos/id/99/150/100`,
-    emoji: faker.random.arrayElement(emojis),
+    emoji: faker.random.arrayElement(emojiIds),
   },
   ...[...new Array(30)].map((_, i) => {
     return {
@@ -150,7 +153,7 @@ export const events: Event[] = [
       reservedUsers: faker.random.arrayElements(users),
       capacity: 100,
       imageUrl: 'https://picsum.photos/150/100?random=' + faker.datatype.number(100),
-      emoji: faker.random.arrayElement(emojis),
+      emoji: faker.random.arrayElement(emojiIds),
     };
   }),
 ];

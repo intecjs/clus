@@ -2,6 +2,7 @@ import styles from './EventCard.module.scss';
 import { Event } from '../../db/event';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { Emoji } from 'emoji-mart';
 
 const cutOff = (str: string, num: number) => (str.length > num ? str.substring(0, num) + '...' : str);
 const cutter = (str: string) => cutOff(str, 50);
@@ -12,7 +13,7 @@ export const EventCard: React.FC<CardProps> = ({ title, subTitle, date, reserved
     <div className={styles.card}>
       <div className={styles.container}>
         <h2>
-          {title} {emoji}
+          {title} <Emoji emoji={emoji} size={20} />
         </h2>
         <p className={styles.description}>{cutter(subTitle)}</p>
         <div className={styles.date}>{dayjs(date).format('YYYY.MM.DD')}</div>

@@ -1,7 +1,7 @@
 import { Event } from '../db/event';
 
 export class APIClient {
-  private baseUrl: string = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
+  private baseUrl: string = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://127.0.0.1:3000';
 
   public fetch(path: string): Promise<Response> {
     return fetch(new URL(path, this.baseUrl).toString());

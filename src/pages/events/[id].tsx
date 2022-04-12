@@ -1,20 +1,20 @@
 import Layout from '@components/layout/Layout';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import { APIClient } from 'src/lib/APIClient';
 import { Event } from '../../db/event';
 import { useEmojiFavicon } from '../../hooks/useFavicon';
 import styles from './EventPage.module.scss';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker, BaseEmoji, Emoji, getEmojiDataFromNative } from 'emoji-mart';
+import { Picker, BaseEmoji, Emoji, emojiIndex } from 'emoji-mart';
 import { useCallback, useState } from 'react';
 import { useDisabledEventListener } from '@hooks';
-import data from 'emoji-mart/data/all.json';
 import faker from '@faker-js/faker';
 import dayjs from 'dayjs';
 import { UserIcon } from '@components/icon';
 import Markdown from '@components/markdown/Markdown';
 import Button from '@components/button/Button';
+import Image from 'next/image';
 
 type EventPageProps = {
   event: Event;
@@ -48,27 +48,26 @@ const EventPageHeader = ({ event }: EventPageProps) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const handleClickEmoji = () => setShowEmojiPicker(true);
   const handleClickEmojiPicker = (e: BaseEmoji) => {
-    setEmoji(e);
+    setEmojiId(e.id);
     setShowEmojiPicker(false);
   };
 
   const c = useCallback(() => setShowEmojiPicker(false), []);
   const wrapperRef = useDisabledEventListener(c);
 
-  const emojiData = getEmojiDataFromNative(event.emoji, 'apple', data);
+  const [emojiId, setEmojiId] = useState<BaseEmoji['id']>(event.emoji);
 
-  const [emoji, setEmoji] = useState<BaseEmoji>(emojiData);
-
-  useEmojiFavicon(emoji?.native ?? '🍎');
+  const emoji = emojiIndex.emojis[emojiId];
+  useEmojiFavicon('native' in emoji ? emoji.native : '🍎');
 
   return (
     <div className={styles.header}>
       <div className={styles.emojiContainer}>
         <div className={styles.eventPageThemeEmoji} onClick={handleClickEmoji}>
-          <Emoji emoji={emoji} set="apple" size={75} />
+          <Emoji emoji={emojiId} size={75} />
         </div>
         <div className={styles.emojiPicker} ref={wrapperRef}>
-          {showEmojiPicker && <Picker set="apple" onClick={handleClickEmojiPicker} />}
+          {showEmojiPicker && <Picker onClick={handleClickEmojiPicker} />}
         </div>
       </div>
       <div className={styles.titleContainer}>
@@ -90,8 +89,20 @@ const EventPageHeader = ({ event }: EventPageProps) => {
 const PageBody = ({ event }: EventPageProps) => {
   return (
     <div className={styles.page}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={event.imageUrl} className={styles.eventImage} alt="event page abstract image" width={'100%'} />
+      <div
+        style={{
+          position: 'relative', // css module の場合 next/image の layout="fill" が動作しない
+          height: '350px',
+        }}
+      >
+        <Image
+          src={event.imageUrl}
+          className={styles.eventImage}
+          alt="event page abstract image"
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
       <h2 className={styles.description}>Description</h2>
       <Markdown>{event.description}</Markdown>
     </div>
