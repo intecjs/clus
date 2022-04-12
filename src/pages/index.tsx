@@ -5,13 +5,12 @@ import { useSession } from 'next-auth/react';
 import { EventCard } from '../components/card/EventCard';
 import { useState } from 'react';
 import { Feeds } from '../components/feed/Feed';
-import { Event } from '../db/event';
+import { Event, events } from '../db/event';
 import Link from 'next/link';
 import { useEmojiFavicon } from '@hooks';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import Layout from '@components/layout/Layout';
 import { feeds } from 'src/db/feeds';
-import { APIClient } from 'src/lib/APIClient';
 
 const EventCardWithLink: React.FC<{ event: Event }> = ({ event }) => {
   return (
@@ -111,19 +110,13 @@ const Home: ComponentWithAuth = ({ events }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const events = await new APIClient().getEvents();
-
-  if (!events) {
-    return {
-      notFound: true,
-    };
-  }
+export const getStaticProps: GetStaticProps<{ events: Event[] }> = async () => {
+  // https://stackoverflow.com/questions/61452675/econnrefused-during-next-build-works-fine-with-next-dev
+  // SSG をする場合、/pages/api/xxx をコールできない。
 
   return {
-    props: {
-      events,
-    },
+    props: { events },
+    revalidate: 10, // in seconds
   };
 };
 
