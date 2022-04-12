@@ -1,5 +1,5 @@
 import Layout from '@components/layout/Layout';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import { APIClient } from 'src/lib/APIClient';
 import { Event } from '../../db/event';
@@ -18,9 +18,15 @@ import Button from '@components/button/Button';
 
 type EventPageProps = {
   event: Event;
+  errors?: any;
 };
 
-const EventPage = ({ event }: EventPageProps) => {
+const EventPage = ({ event, errors }: EventPageProps) => {
+  if (errors?.length) {
+    // TODO: define error types
+    return <div>{errors}</div>;
+  }
+
   return (
     <Layout>
       <Head>
@@ -139,80 +145,44 @@ function pickFirstUrlQuery(value: string | string[]): string {
   return value;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  if (params?.id === undefined) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const id = pickFirstUrlQuery(params.id);
-  const event = await new APIClient().getEvent(id);
-
-  if (!event) {
-    return {
-      notFound: true,
-    };
-  }
-
+export const getStaticPaths: GetStaticPaths = async () => {
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
   return {
-    props: {
-      event,
-    },
+    paths: [],
+    fallback: 'blocking', // キャッシュがまだ作られていないときはSSRを行う
   };
 };
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const events = [
-//     {
-//       id: '1',
-//     },
-//     {
-//       id: '2',
-//     },
-//     {
-//       id: '3',
-//     },
-//     {
-//       id: '4',
-//     },
-//   ];
-//   // Get the paths we want to pre-render based on users
-//   const paths = events.map((e) => ({
-//     params: { id: e.id },
-//   }));
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries.
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  try {
+    if (params?.id === undefined) {
+      return {
+        notFound: true,
+      };
+    }
 
-//   // We'll pre-render only these paths at build time.
-//   // { fallback: false } means other routes should 404.
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
+    const id = pickFirstUrlQuery(params.id);
+    const event = await new APIClient().getEvent(id);
 
-// // This function gets called at build time on server-side.
-// // It won't be called on client-side, so you can even do
-// // direct database queries.
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   try {
-//     // params contains the post `id`.
-//     // If the route is like /posts/1, then params.id is 1
-//     //   const res = await fetch(`https://.../posts/${params.id}`);
-//     //     const post = await res.json();
-//     const item = {
-//       id: params?.id,
-//     };
+    if (!event) {
+      return {
+        notFound: true,
+      };
+    }
 
-//     // Pass post data to the page via props
-//     return {
-//       props: { item },
-//       revalidate: 10, // in seconds
-//     };
-//   } catch (e: any) {
-//     return {
-//       props: { errors: e.message },
-//     };
-//   }
-// };
+    return {
+      props: { event },
+      revalidate: 10, // in seconds
+    };
+  } catch (e: any) {
+    return {
+      props: { errors: e.message },
+    };
+  }
+};
 
 export default EventPage;

@@ -16,6 +16,7 @@ export const UserIcon: React.FC<UserIconProps> = ({ image, height, width }) => {
       alt="user icon image"
       height={height ?? 100}
       width={width ?? 100}
+      loading="lazy"
     ></img>
   );
 };
