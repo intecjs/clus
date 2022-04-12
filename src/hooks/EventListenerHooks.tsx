@@ -30,7 +30,7 @@ export function useClickOutsideEventListener(ref: React.RefObject<any>, callback
 export function useAnyKeyEventListener(keys: KeyboardEvent['key'], callback: () => any) {
   useEffect(() => {
     function handler(event: KeyboardEvent) {
-      if (keys.includes(event.key)) {
+      if (keys === event.key) {
         callback();
       }
     }
