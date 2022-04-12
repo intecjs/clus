@@ -33,7 +33,9 @@
 
 .emojiPicker {
   position: relative;
-  z-index: auto;
+  z-index: 1;
+  top: 0px;
+  right: 130px
 }
 
 .titleContainer {

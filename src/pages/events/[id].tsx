@@ -67,7 +67,9 @@ const EventPageHeader = ({ event }: EventPageProps) => {
           <Emoji emoji={emojiId} size={75} />
         </div>
         <div className={styles.emojiPicker} ref={wrapperRef}>
-          {showEmojiPicker && <Picker onClick={handleClickEmojiPicker} />}
+          {showEmojiPicker && (
+            <Picker title="" autoFocus={true} emoji="apple" showSkinTones={false} onClick={handleClickEmojiPicker} />
+          )}
         </div>
       </div>
       <div className={styles.titleContainer}>
