@@ -64,18 +64,33 @@ const mdExample = `
 
   # else
 
+  ### A block quote
+
   > A block quote with ~strikethrough~ and a URL: https://reactjs.org.
 
-  <a>https://reactjs.org</a>
+  > A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+
+
+  text with \`back quote\` and \`code\`.
+
+  ### Lists
 
   * Lists
   * [ ] todo
   * [x] done
+    * Nested Item
 
-  A table:
+  ### A table:
 
-  | a | b |
-  | - | - |
+  | Command | Description |
+  | --- | --- |
+  | \`git status\` | List all *new or modified* files |
+  | \`git diff\` | Show file differences that **haven't been** staged |
+  | \`git commit\` | xxxxx |
+
+
+
+
 
 `;
 
