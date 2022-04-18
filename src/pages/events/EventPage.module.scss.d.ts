@@ -3,6 +3,7 @@ export type Styles = {
   'aside': string;
   'button': string;
   'capacity': string;
+  'card': string;
   'container': string;
   'description': string;
   'emojiContainer': string;

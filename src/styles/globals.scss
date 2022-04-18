@@ -1,7 +1,9 @@
 :root {
   --c-primary: tomato;
   --c-secondary: lawngreen;
-  --c-gray: #eaeaea
+  --c-gray: #eaeaea;
+
+  --c-primary-light: rgb(255, 230, 220);
 }
 
 html,
@@ -10,6 +12,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
     Helvetica Neue, sans-serif;
+  background-color: var(--c-primary-light);
 }
 
 a {
