@@ -2,8 +2,10 @@ import '@styles/globals.scss';
 import type { AppProps } from 'next/app';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { AuthComponentConfig } from '../../types/next-auth';
+import KBarProvider from '../components/kbar/KBarProvider';
+import { PressCtrlKeyToStart } from '../components/kbar/PressCtrlKeyToStart';
 
 type Props = {
   children?: any;
@@ -31,15 +33,18 @@ const Authorizer: React.FC<Props> = ({ children }) => {
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps<{ auth: any }>) {
   return (
-    <SessionProvider session={session}>
-      {Component.auth ? (
-        <Authorizer auth={Component.auth}>
+    <KBarProvider>
+      <SessionProvider session={session}>
+        {Component.auth ? (
+          <Authorizer auth={Component.auth}>
+            <Component {...pageProps} />
+          </Authorizer>
+        ) : (
           <Component {...pageProps} />
-        </Authorizer>
-      ) : (
-        <Component {...pageProps} />
-      )}
-    </SessionProvider>
+        )}
+        <PressCtrlKeyToStart />
+      </SessionProvider>
+    </KBarProvider>
   );
 }
 

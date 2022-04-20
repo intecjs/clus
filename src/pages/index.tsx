@@ -114,6 +114,7 @@ const Home: ComponentWithAuth = ({ events }) => {
       </Head>
 
       {data?.user.name && <WelcomeMessage name={data.user.name} />}
+
       <div className={styles.main}>
         <section className={styles.contents}>
           <ReservedEvents events={events.slice(0, 10)} />
