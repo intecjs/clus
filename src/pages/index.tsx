@@ -2,39 +2,14 @@ import { ComponentWithAuth } from 'next-auth';
 import Head from 'next/head';
 import styles from '@styles/Home.module.scss';
 import { useSession } from 'next-auth/react';
-import { EventCard } from '../components/card/EventCard';
 import { useState } from 'react';
 import { Feeds } from '../components/feed/Feed';
 import { Event, events } from '../db/event';
-import Link from 'next/link';
 import { useEmojiFavicon } from '@hooks';
 import { GetStaticProps } from 'next';
 import Layout from '@components/layout/Layout';
 import { feeds } from 'src/db/feeds';
-
-const EventCardWithLink: React.FC<{ event: Event }> = ({ event }) => {
-  return (
-    <Link href={'/events/' + event.id} passHref>
-      <a>
-        <EventCard {...event} />
-      </a>
-    </Link>
-  );
-};
-
-const EventCardsWithLink: React.FC<{ events: Event[] }> = ({ events }) => {
-  return (
-    <>
-      {events.map((event) => {
-        return (
-          <div key={event.id} style={{ paddingBottom: '0.5rem' }}>
-            <EventCardWithLink event={event} />
-          </div>
-        );
-      })}
-    </>
-  );
-};
+import { EventCardsWithLink } from '../components/card/EventCardWithLink';
 
 const ShowMoreButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = (props) => {
   return (

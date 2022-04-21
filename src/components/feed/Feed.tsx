@@ -26,7 +26,7 @@ const Feed: React.FC<Feed> = (feed) => {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img width={50} height={50} src={feed.votedUserAvatarUrl} alt="avator image" />
       <p>
-        <Link href={feed.votedUser}>
+        <Link href={`/users/${feed.votedUser}`}>
           <a>{feed.votedUser}</a>
         </Link>{' '}
         さんが <Link href={`/events/${feed.eventName}`}>{feed.eventName}</Link> を公開しました。
