@@ -1,0 +1,76 @@
+.kbarSearch {
+  width: 85vw;
+  max-width: 700px;
+  height: 4rem;
+  padding: 20px;
+  font-size: large;
+  border-radius: 0.5rem 0.5rem 0 0;
+  border: none;
+  outline: none;
+}
+
+.positioner {
+  // background-color: transparent;
+  background: rgba(0, 0, 0, .4);
+}
+
+.section {
+  color: gray;
+  padding: 20px;
+  height: 1.0rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.kbarAnimator {
+  background-color:white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 2px rgb(148, 146, 146);
+}
+
+.icon {
+  font-size: x-large;
+}
+
+.results {
+  color:black;
+  font-size: medium;
+  padding: 10px 20px 10px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  .left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px
+  }
+  .right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 5px 3px 5px;
+    border-radius: 0.2rem;
+    color: white;
+    gap: 5px;
+    background-color: gray;
+  }
+}
+
+.kbarResults {
+  @extend .results;
+  // border-left: 2px white solid;
+}
+
+.kbarResultsActive {
+  @extend .results;
+  background-color: rgb(233, 233, 233);
+}

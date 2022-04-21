@@ -159,7 +159,7 @@ export const events: Event[] = [
   },
   ...[...new Array(30)].map((_, i) => {
     return {
-      id: i.toString(),
+      id: 6 + i.toString(),
       title: faker.lorem.sentence(),
       subTitle: faker.lorem.sentence(),
       description: faker.lorem.paragraphs().repeat(faker.datatype.number(10)),
