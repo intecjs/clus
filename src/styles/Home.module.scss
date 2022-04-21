@@ -6,7 +6,9 @@
 }
 
 .contents {
-  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .sideArea {
@@ -31,4 +33,19 @@
   display: inline-block;
   transform: rotate( 30deg );
   transition: 100ms;
+}
+
+.showMoreButton {
+  width: 100%;
+  border-width: 0px;
+  border-radius: 0.5rem;
+  color: gray;
+  height: 3rem;
+  cursor: pointer;
+  background-color: var(--c-primary-light);
+  &:hover {
+    opacity: 0.7;
+    color: black;
+    font-weight: 500;
+  }
 }

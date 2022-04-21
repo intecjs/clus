@@ -3,6 +3,7 @@ export type Styles = {
   'contents': string;
   'hand': string;
   'main': string;
+  'showMoreButton': string;
   'sideArea': string;
 };
 

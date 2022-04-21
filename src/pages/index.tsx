@@ -22,22 +22,46 @@ const EventCardWithLink: React.FC<{ event: Event }> = ({ event }) => {
   );
 };
 
-const ReservedEvents: React.FC<{ events: Event[] }> = ({ events }) => {
-  const [hide, setHide] = useState(true);
-  const handler = () => setHide(!hide);
-
+const EventCardsWithLink: React.FC<{ events: Event[] }> = ({ events }) => {
   return (
-    <div>
-      <h2>次に参加予定のイベント</h2>
-      {(hide ? events.slice(0, 5) : events).map((event) => {
+    <>
+      {events.map((event) => {
         return (
           <div key={event.id} style={{ paddingBottom: '0.5rem' }}>
             <EventCardWithLink event={event} />
           </div>
         );
       })}
+    </>
+  );
+};
 
-      {hide && <button onClick={handler}>show more</button>}
+const ShowMoreButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = (props) => {
+  return (
+    <button className={styles.showMoreButton} {...props}>
+      もっとみる
+    </button>
+  );
+};
+
+const useHide = () => {
+  const [hide, setHide] = useState(true);
+  const handler = () => setHide(!hide);
+
+  return {
+    hide,
+    handler,
+  };
+};
+
+const ReservedEvents: React.FC<{ events: Event[] }> = ({ events }) => {
+  const { hide, handler } = useHide();
+
+  return (
+    <div>
+      <h2>次に参加予定のイベント</h2>
+      <EventCardsWithLink events={hide ? events.slice(0, 5) : events} />
+      {hide && <ShowMoreButton onClick={handler} />}
     </div>
   );
 };
@@ -46,13 +70,7 @@ const RecommendEvents: React.FC<{ events: Event[] }> = ({ events }) => {
   return (
     <div>
       <h2>おすすめイベント</h2>
-      {events.map((event) => {
-        return (
-          <div key={event.id} style={{ paddingBottom: '0.5rem' }}>
-            <EventCardWithLink event={event} />
-          </div>
-        );
-      })}
+      <EventCardsWithLink events={events} />
     </div>
   );
 };
@@ -62,7 +80,7 @@ const Calendar = () => {
     <div
       style={{
         height: '200px',
-        backgroundColor: 'rgb(100%, 95.6%, 93.7%)',
+        backgroundColor: 'white',
         borderRadius: '0.5rem',
         display: 'flex',
         alignItems: 'center',
@@ -110,12 +128,17 @@ const Home: ComponentWithAuth = ({ events }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<{ events: Event[] }> = async () => {
+export const getStaticProps: GetStaticProps<{ events: Omit<Event, 'description'>[] }> = async () => {
   // https://stackoverflow.com/questions/61452675/econnrefused-during-next-build-works-fine-with-next-dev
   // SSG をする場合、/pages/api/xxx をコールできない。
 
   return {
-    props: { events },
+    props: {
+      events: events.map((e) => {
+        const { description, ...rest } = e;
+        return rest;
+      }),
+    },
     revalidate: 10, // in seconds
   };
 };
