@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { AuthComponentConfig } from '../../types/next-auth';
 import KBarProvider from '../components/kbar/KBarProvider';
 import { PressCtrlKeyToStart } from '../components/kbar/PressCtrlKeyToStart';
+import { Loading } from '../components/loading/Loading';
 
 type Props = {
   children?: any;
@@ -28,7 +29,7 @@ const Authorizer: React.FC<Props> = ({ children }) => {
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <div>Loading...</div>;
+  return <Loading />;
 };
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps<{ auth: any }>) {
