@@ -13,69 +13,8 @@ import {
 import styles from './KBarProvider.module.scss';
 import { Event } from 'src/db/event';
 import { Emoji } from 'emoji-mart';
+import { useTheme } from '../../theme/useTheme';
 
-const staticActions: Action[] = [
-  {
-    id: 'home',
-    name: 'Home',
-    icon: '🏠',
-    section: {
-      name: 'home',
-      priority: 100,
-    },
-    shortcut: ['h'],
-    keywords: 'home',
-    perform: () => (window.location.pathname = '/'),
-  },
-  {
-    id: 'blog',
-    name: 'Blog',
-    icon: '📃',
-    section: {
-      name: 'blog',
-      priority: 99,
-    },
-    shortcut: ['b'],
-    keywords: 'writing words',
-    perform: () => (window.location.pathname = 'blog'),
-  },
-  {
-    id: 'contact',
-    name: 'Contact',
-    icon: '😗',
-    section: {
-      name: 'settings',
-      priority: 98,
-    },
-    shortcut: ['c'],
-    keywords: 'email',
-    perform: () => (window.location.pathname = 'contact'),
-  },
-  {
-    id: 'profile',
-    name: 'Profile',
-    icon: '👕',
-    section: {
-      name: 'settings',
-      priority: 98,
-    },
-    shortcut: ['p'],
-    keywords: 'user',
-    perform: () => (window.location.pathname = 'profile'),
-  },
-  {
-    id: 'theme',
-    name: 'Theme',
-    icon: '🖍',
-    section: {
-      name: 'settings',
-      priority: 98,
-    },
-    shortcut: ['t'],
-    keywords: 'theme color',
-    perform: () => (window.location.pathname = 'theme'),
-  },
-];
 function RenderResults() {
   const { results } = useMatches();
 
@@ -134,8 +73,73 @@ const Search = () => {
 };
 
 const KBarProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { setTheme } = useTheme();
+
+  const actions: Action[] = [
+    {
+      id: 'home',
+      name: 'Home',
+      icon: '🏠',
+      section: {
+        name: 'home',
+        priority: 100,
+      },
+      shortcut: ['h'],
+      keywords: 'home',
+      perform: () => (window.location.pathname = '/'),
+    },
+    {
+      id: 'blog',
+      name: 'Blog',
+      icon: '📃',
+      section: {
+        name: 'blog',
+        priority: 99,
+      },
+      shortcut: ['b'],
+      keywords: 'writing words',
+      perform: () => (window.location.pathname = 'blog'),
+    },
+    {
+      id: 'contact',
+      name: 'Contact',
+      icon: '😗',
+      section: {
+        name: 'settings',
+        priority: 98,
+      },
+      shortcut: ['c'],
+      keywords: 'email',
+      perform: () => (window.location.pathname = 'contact'),
+    },
+    {
+      id: 'profile',
+      name: 'Profile',
+      icon: '👕',
+      section: {
+        name: 'settings',
+        priority: 98,
+      },
+      shortcut: ['p'],
+      keywords: 'user',
+      perform: () => (window.location.pathname = 'profile'),
+    },
+    {
+      id: 'theme',
+      name: 'Change Theme Color',
+      icon: '🌙',
+      section: {
+        name: 'settings',
+        priority: 98,
+      },
+      shortcut: ['t'],
+      keywords: 'theme color',
+      perform: () => setTheme((theme) => (theme === 'dark' ? 'light' : 'dark')),
+    },
+  ];
+
   return (
-    <KBarProvider actions={staticActions}>
+    <KBarProvider actions={actions}>
       <KBarPortal>
         <KBarPositioner className={styles.positioner}>
           <KBarAnimator className={styles.kbarAnimator}>
