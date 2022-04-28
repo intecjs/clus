@@ -1,0 +1,40 @@
+.mainGrid {
+    min-height: 800px;
+    margin-top: 10px;
+
+    display: grid;
+    gap: 10px;
+    flex-direction: row;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 600px) {
+    .mainGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+
+    li {
+        color: gray;
+
+        border-radius: 0.5rem;
+        border: 1px solid gray;
+
+        padding: 10px;
+        &:hover {
+            background-color: var(--c-gray);
+            color: black;
+        }
+    }
+  }

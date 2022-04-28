@@ -2,18 +2,19 @@ import Layout from '@components/layout/Layout';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { APIClient } from 'src/lib/APIClient';
-import styles from './UserPage.module.scss';
+import styles from './UserEventScheduledPage.module.scss';
 import { Event } from 'src/db/event';
+import { EventCardsWithLink } from '@components/card/EventCardWithLink';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import UserProfilePageLayout from '@components/layout/UserProfilePageLayout';
 
-type UserPageProps = {
+type UserEventScheduledPageProps = {
   events: Event[];
   errors?: any;
 };
 
-const UserPage = ({ events, errors }: UserPageProps) => {
+const UserEventScheduledPage = ({ events, errors }: UserEventScheduledPageProps) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -29,7 +30,14 @@ const UserPage = ({ events, errors }: UserPageProps) => {
         <meta name="description" content="user profile" />
       </Head>
 
-      {id ? <UserProfilePageLayout userId={id as string}>contents</UserProfilePageLayout> : null}
+      {id ? (
+        <UserProfilePageLayout userId={id as string}>
+          <h2>参加予定のイベント</h2>
+          <div className={styles.mainGrid}>
+            <EventCardsWithLink events={events} />
+          </div>
+        </UserProfilePageLayout>
+      ) : null}
     </Layout>
   );
 };
@@ -111,4 +119,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 //   }
 // };
 
-export default UserPage;
+export default UserEventScheduledPage;
