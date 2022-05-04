@@ -3,11 +3,11 @@
   padding: 0rem;
   text-align: left;
   color: inherit;
-  background-color: white;
-  box-shadow: 0 2px 4px #4385bb12;
+  background-color: var(--c-card-background);
+  box-shadow: 0 2px 4px var(--c-box-shadow);
 
   text-decoration: none;
-  border: 1px solid #eaeaea;
+  border: 1px solid var(--c-border);
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease, transform 0.5s;
 
@@ -49,8 +49,7 @@
 .card:focus,
 .card:active {
   color: var(--c-primary);
-  // border-color: var(--c-primary);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 1px var(--c-box-shadow);
   transform: translate(0, -1px);
 }
 
