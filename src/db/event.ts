@@ -5,11 +5,32 @@ import { BaseEmoji } from 'emoji-mart';
 type User = {
   id: string;
   name: string;
+  image: string;
+  profile?: UserProfile;
 };
 
-const users = [...new Array(30)].map((_) => {
-  return { id: faker.datatype.uuid(), name: faker.name.firstName() };
-});
+type UserProfile = {
+  description: string;
+};
+
+const users = [
+  ...[
+    {
+      id: '1',
+      name: 'J Smith',
+      image: 'https://i.pravatar.cc/?img=2',
+      profile: { description: faker.lorem.paragraph() },
+    },
+  ],
+  ...[...new Array(30)].map((_) => {
+    return {
+      id: faker.datatype.uuid(),
+      name: faker.name.firstName(),
+      image: faker.image.avatar(),
+      profile: { description: faker.lorem.paragraph() },
+    };
+  }),
+];
 
 export type Event = {
   id: string;
@@ -18,10 +39,11 @@ export type Event = {
   description: string; // Markdown string
   date: string;
   end: string;
+  owner: User;
   reservedUsers: User[];
   capacity: number;
   imageUrl: string;
-  emoji: BaseEmoji['id'];
+  emojiId: BaseEmoji['id'];
 };
 
 const mdExample = `
@@ -104,10 +126,11 @@ export const events: Event[] = [
     description: mdExample,
     date: faker.date.recent().toISOString(),
     end: faker.date.recent().toISOString(),
+    owner: users[0],
     reservedUsers: faker.random.arrayElements(users),
     capacity: 100,
     imageUrl: 'https://picsum.photos/id/237/350/200',
-    emoji: 'apple',
+    emojiId: 'apple',
   },
   {
     id: '2',
@@ -116,10 +139,11 @@ export const events: Event[] = [
     description: faker.lorem.paragraphs().repeat(faker.datatype.number(10)),
     date: faker.date.recent().toISOString(),
     end: faker.date.recent().toISOString(),
+    owner: users[1],
     reservedUsers: faker.random.arrayElements(users),
     capacity: 50,
     imageUrl: `https://picsum.photos/id/211/150/100`,
-    emoji: faker.random.arrayElement(emojiIds),
+    emojiId: faker.random.arrayElement(emojiIds),
   },
   {
     id: '3',
@@ -128,10 +152,11 @@ export const events: Event[] = [
     description: faker.lorem.paragraphs().repeat(faker.datatype.number(10)),
     date: faker.date.recent().toISOString(),
     end: faker.date.recent().toISOString(),
+    owner: users[2],
     reservedUsers: faker.random.arrayElements(users),
     capacity: 30,
     imageUrl: `https://picsum.photos/id/12/150/100`,
-    emoji: faker.random.arrayElement(emojiIds),
+    emojiId: faker.random.arrayElement(emojiIds),
   },
   {
     id: '4',
@@ -140,10 +165,11 @@ export const events: Event[] = [
     description: faker.lorem.paragraphs().repeat(faker.datatype.number(10)),
     date: faker.date.recent().toISOString(),
     end: faker.date.recent().toISOString(),
+    owner: users[3],
     reservedUsers: faker.random.arrayElements(users),
     capacity: 20,
     imageUrl: `https://picsum.photos/id/56/150/100`,
-    emoji: faker.random.arrayElement(emojiIds),
+    emojiId: faker.random.arrayElement(emojiIds),
   },
   {
     id: '5',
@@ -152,10 +178,11 @@ export const events: Event[] = [
     description: faker.lorem.paragraphs().repeat(faker.datatype.number(10)),
     date: faker.date.recent().toISOString(),
     end: faker.date.recent().toISOString(),
+    owner: users[3],
     reservedUsers: faker.random.arrayElements(users),
     capacity: 100,
     imageUrl: `https://picsum.photos/id/99/150/100`,
-    emoji: faker.random.arrayElement(emojiIds),
+    emojiId: faker.random.arrayElement(emojiIds),
   },
   ...[...new Array(30)].map((_, i) => {
     return {
@@ -165,10 +192,11 @@ export const events: Event[] = [
       description: faker.lorem.paragraphs().repeat(faker.datatype.number(10)),
       date: faker.date.recent().toISOString(),
       end: faker.date.recent().toISOString(),
+      owner: users[0],
       reservedUsers: faker.random.arrayElements(users),
       capacity: 100,
       imageUrl: 'https://picsum.photos/150/100?random=' + faker.datatype.number(100),
-      emoji: faker.random.arrayElement(emojiIds),
+      emojiId: faker.random.arrayElement(emojiIds),
     };
   }),
 ];

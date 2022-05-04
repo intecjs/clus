@@ -1,11 +1,17 @@
 // customer banner
 export type Styles = {
   'aside': string;
+  'bar': string;
+  'body': string;
   'button': string;
   'capacity': string;
   'card': string;
   'container': string;
   'description': string;
+  'divider': string;
+  'ellipsesDetailsMenu': string;
+  'ellipsesMenu': string;
+  'ellipsesMenuContainer': string;
   'emojiContainer': string;
   'emojiPicker': string;
   'eventDate': string;

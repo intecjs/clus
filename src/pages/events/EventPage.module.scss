@@ -23,9 +23,12 @@
   align-items: center;
   justify-content: center;
   font-size: 75px;
+
+  border: 0px;
+  background-color: transparent;
 }
 
-.eventPageThemeEmoji:hover {
+.eventPageThemeEmoji:enabled:hover {
   background-color: var(--c-gray);
   transition: 300ms;
   cursor: pointer;
@@ -35,7 +38,7 @@
   position: relative;
   z-index: 1;
   top: 0px;
-  right: 130px
+  right: 130px;
 }
 
 .titleContainer {
@@ -91,16 +94,85 @@
 .card {
   background-color: var(--c-card-background);
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px var(--c-box-shadow)
+  box-shadow: 0 2px 4px var(--c-box-shadow);
 }
 
 .page {
   @extend .card;
 
-  padding: 10px;
-
   .description {
     text-align: center;
+  }
+
+  .bar {
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-bottom: 1px solid var(--c-box-shadow);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    background-color: var(--c-canvas-subtle);
+    color: var(--c-font-muted);
+    font-size: small;
+  }
+
+  .body {
+    padding: 10px;
+  }
+}
+
+.ellipsesMenuContainer {
+  position: relative;
+}
+
+.ellipsesMenu {
+  border-radius: 0.5rem;
+
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.ellipsesDetailsMenu {
+  position: absolute;
+  right: 0px;
+
+  padding: 10px 5px 10px 5px;
+
+  z-index: 1;
+  background-color: #fff;
+
+  width: 150px;
+  border-radius: 0.3rem;
+  border: solid 1px var(--c-gray);
+
+  .divider {
+    border-top: 1px solid var(--c-gray);
+    width: 100%;
+    margin: 2px 0px 2px 0px;
+  }
+
+  button {
+    border: none;
+    border-radius: 0.3rem;
+    padding: 10px;
+    background-color: transparent;
+    width: 100%;
+
+    text-align: left;
+  }
+  button:hover {
+    background-color: var(--c-gray);
+    transition: 300ms;
+    cursor: pointer;
   }
 }
 
@@ -151,7 +223,6 @@
   h3 {
     text-align: center;
   }
-
 
   * {
     margin-top: 5px;

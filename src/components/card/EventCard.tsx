@@ -8,7 +8,7 @@ const cutOff = (str: string, num: number) => (str.length > num ? str.substring(0
 const cutter = (str: string) => cutOff(str, 50);
 
 type CardProps = Event;
-export const EventCard: React.FC<CardProps> = ({ title, subTitle, date, reservedUsers, imageUrl, emoji }) => {
+export const EventCard: React.FC<CardProps> = ({ title, subTitle, date, reservedUsers, imageUrl, emojiId: emoji }) => {
   return (
     <div className={styles.card}>
       <div className={styles.container}>

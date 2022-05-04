@@ -52,7 +52,7 @@ const Search = () => {
           return {
             id: e.id,
             name: e.title,
-            icon: <Emoji emoji={e.emoji} size={30} />,
+            icon: <Emoji emoji={e.emojiId} size={30} />,
             section: {
               name: 'events',
               priority: 1,

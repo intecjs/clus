@@ -1,4 +1,4 @@
-import NextAuth, { DefaultUser } from 'next-auth';
+import NextAuth, { DefaultUser, DefaultProfile } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
 /**
@@ -13,8 +13,6 @@ declare module 'next-auth' {
     user: User | JWT;
   }
 
-  interface User extends DefaultUser {
-    id?: string | null;
-  }
+  interface User extends DefaultProfile {}
   type ComponentWithAuth<PropsType = any> = React.FC<PropsType> & AuthComponentConfig;
 }

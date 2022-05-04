@@ -9,12 +9,12 @@ import 'emoji-mart/css/emoji-mart.css';
 import { Picker, BaseEmoji, Emoji, emojiIndex } from 'emoji-mart';
 import { useCallback, useState } from 'react';
 import { useDisabledEventListener } from '@hooks';
-import faker from '@faker-js/faker';
 import dayjs from 'dayjs';
 import { UserIcon } from '@components/icon';
 import Markdown from '@components/markdown/Markdown';
 import Button from '@components/button/Button';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 type EventPageProps = {
   event: Event;
@@ -22,10 +22,14 @@ type EventPageProps = {
 };
 
 const EventPage = ({ event, errors }: EventPageProps) => {
+  const { data: session } = useSession();
+
   if (errors?.length) {
     // TODO: define error types
     return <div>{errors}</div>;
   }
+
+  const isOwner = session?.user?.sub === event.owner.id;
 
   return (
     <Layout>
@@ -34,7 +38,7 @@ const EventPage = ({ event, errors }: EventPageProps) => {
         <meta name="description" content={event.title} />
       </Head>
 
-      <EventPageHeader event={event} />
+      <EventPageHeader event={event} editable={isOwner} />
 
       <div className={styles.main}>
         <PageBody event={event} />
@@ -44,7 +48,18 @@ const EventPage = ({ event, errors }: EventPageProps) => {
   );
 };
 
-const EventPageHeader = ({ event }: EventPageProps) => {
+type EventPageHeaderProps = {
+  event: Event;
+  editable: boolean;
+};
+
+type PackableEmojiProps = {
+  emojiId: string;
+  setEmojiId: (emojiId: string) => void;
+  disabled?: boolean;
+};
+
+const PackableEmoji = ({ emojiId, setEmojiId, disabled }: PackableEmojiProps) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const handleClickEmoji = () => setShowEmojiPicker(true);
   const handleClickEmojiPicker = (e: BaseEmoji) => {
@@ -55,23 +70,28 @@ const EventPageHeader = ({ event }: EventPageProps) => {
   const c = useCallback(() => setShowEmojiPicker(false), []);
   const wrapperRef = useDisabledEventListener(c);
 
-  const [emojiId, setEmojiId] = useState<BaseEmoji['id']>(event.emoji);
+  return (
+    <div className={styles.emojiContainer}>
+      <button className={styles.eventPageThemeEmoji} onClick={handleClickEmoji} disabled={disabled}>
+        <Emoji emoji={emojiId} size={75} />
+      </button>
+      <div className={styles.emojiPicker} ref={wrapperRef}>
+        {showEmojiPicker && (
+          <Picker title="" autoFocus={true} emoji="apple" showSkinTones={false} onClick={handleClickEmojiPicker} />
+        )}
+      </div>
+    </div>
+  );
+};
+const EventPageHeader = ({ event, editable }: EventPageHeaderProps) => {
+  const [emojiId, setEmojiId] = useState<BaseEmoji['id']>(event.emojiId);
 
   const emoji = emojiIndex.emojis[emojiId];
   useEmojiFavicon('native' in emoji ? emoji.native : '🍎');
 
   return (
     <div className={styles.header}>
-      <div className={styles.emojiContainer}>
-        <div className={styles.eventPageThemeEmoji} onClick={handleClickEmoji}>
-          <Emoji emoji={emojiId} size={75} />
-        </div>
-        <div className={styles.emojiPicker} ref={wrapperRef}>
-          {showEmojiPicker && (
-            <Picker title="" autoFocus={true} emoji="apple" showSkinTones={false} onClick={handleClickEmojiPicker} />
-          )}
-        </div>
-      </div>
+      <PackableEmoji emojiId={emojiId} setEmojiId={setEmojiId} disabled={!editable} />
       <div className={styles.titleContainer}>
         <h1>{event.title}</h1>
         <p>{event.subTitle}</p>
@@ -88,25 +108,77 @@ const EventPageHeader = ({ event }: EventPageProps) => {
   );
 };
 
-const PageBody = ({ event }: EventPageProps) => {
+type EventPageBodyProps = {
+  event: Event;
+  editable: boolean;
+};
+
+const Ellipses = () => (
+  <svg
+    aria-label="Show options"
+    role="img"
+    height="16"
+    viewBox="0 0 16 16"
+    version="1.1"
+    width="16"
+    data-view-component="true"
+  >
+    <path d="M8 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM1.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm13 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+  </svg>
+);
+
+type EllipsesMenuProps = {
+  children: JSX.Element[];
+};
+
+const EllipsesMenu: React.FC<EllipsesMenuProps> = ({ children }) => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const c = useCallback(() => setShowMenu(false), []);
+  const wrapperRef = useDisabledEventListener(c);
+
+  return (
+    <div className={styles.ellipsesMenuContainer} ref={wrapperRef}>
+      <div role="button" className={styles.ellipsesMenu} onClick={() => setShowMenu((s) => !s)}>
+        <Ellipses />
+      </div>
+      {showMenu && <div className={styles.ellipsesDetailsMenu}>{children}</div>}
+    </div>
+  );
+};
+
+const PageBody = ({ event, editable }: EventPageBodyProps) => {
   return (
     <div className={styles.page}>
-      <div
-        style={{
-          position: 'relative', // css module の場合 next/image の layout="fill" が動作しない
-          height: '350px',
-        }}
-      >
-        <Image
-          src={event.imageUrl}
-          className={styles.eventImage}
-          alt="event page abstract image"
-          layout="fill"
-          objectFit="cover"
-        />
+      {editable ?? (
+        <div className={styles.bar}>
+          <span>{event.owner.name} updated 15 days ago.</span>
+          <EllipsesMenu>
+            <button>Copy Link</button>
+            <button>Quote Reply</button>
+            <div className={styles.divider}></div>
+            <button>Edit</button>
+          </EllipsesMenu>
+        </div>
+      )}
+      <div className={styles.body}>
+        <div
+          style={{
+            position: 'relative', // css module の場合 next/image の layout="fill" が動作しない
+            height: '350px',
+          }}
+        >
+          <Image
+            src={event.imageUrl}
+            className={styles.eventImage}
+            alt="event page abstract image"
+            layout="fill"
+            objectFit="cover"
+          />
+        </div>
+        <h2 className={styles.description}>Description</h2>
+        <Markdown>{event.description}</Markdown>
       </div>
-      <h2 className={styles.description}>Description</h2>
-      <Markdown>{event.description}</Markdown>
     </div>
   );
 };
@@ -126,25 +198,24 @@ const PageAside = ({ event }: EventPageProps) => {
       </div>
       <div className={styles.users}>
         <h3>参加者</h3>
-        {[...new Array(faker.datatype.number(20))].map((_, i) => (
-          <UserIcon key={i} image={faker.image.avatar()} height={40} width={40} />
+        {event.reservedUsers.map((user, i) => (
+          <UserIcon key={i} image={user.image} height={40} width={40} />
         ))}
       </div>
       <div className={styles.owner}>
         <h3>管理者</h3>
         <div className={styles.container}>
-          <UserIcon image={faker.image.avatar()} height={60} width={60} />
+          <UserIcon image={event.owner.image} height={60} width={60} />
           <div>
             <div className={styles.name}>
-              <span>{faker.name.firstName()}</span>
-              <span>{faker.name.lastName()}</span>
+              <span>{event.owner.name}</span>
             </div>
             <Button color="secondary" className={styles.followButton}>
               Follow
             </Button>
           </div>
         </div>
-        <div>{faker.lorem.paragraph()}</div>
+        <div>{event.owner.profile?.description}</div>
       </div>
     </div>
   );
